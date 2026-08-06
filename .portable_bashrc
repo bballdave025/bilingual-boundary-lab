@@ -1,0 +1,13 @@
+repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+export BBL_REPO_ROOT="$repo_root"
+export PYTHONPATH="$repo_root/src${PYTHONPATH:+:$PYTHONPATH}"
+export PATH="$repo_root/tools:$PATH"
+cd "$repo_root"
+
+alias pytouch='python "$BBL_REPO_ROOT/tools/pytouch.py"'
+alias pytree='python "$BBL_REPO_ROOT/tools/pytree.py"'
+alias bbltest='python -m pytest'
+alias bblbuild='python scripts/build_war_and_peace_corpus.py'
+alias bblrun='python scripts/run_first_experiment.py'
+
+PS1="(bbl) ${PS1:-\\u@\\h:\\w\\$ }"

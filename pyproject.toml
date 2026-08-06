@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bilingual-boundary-lab"
+version = "0.1.0"
+description = "Unicode-first bilingual boundary visualization and small-corpus n-gram experiments."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "beautifulsoup4>=4.12,<5",
+    "matplotlib>=3.8,<4",
+    "requests>=2.31,<3",
+]
+
+[project.optional-dependencies]
+notebook = [
+    "ipykernel>=6.29,<7",
+    "jupyterlab>=4,<5",
+]
+test = [
+    "pytest>=8,<9",
+]
+dev = [
+    "bilingual-boundary-lab[notebook,test]",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 79
+target-version = "py310"
