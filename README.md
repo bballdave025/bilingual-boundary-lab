@@ -83,8 +83,8 @@ including:
 ```text
 .portable_bashrc
 .portable_profile.ps1
-enter_repo_shell.sh
-enter_repo_shell.ps1
+setup_shell_repo_env.sh
+setup_shell_repo_env.ps1
 tools/pytouch.py
 tools/pytree.py
 ```
@@ -96,14 +96,14 @@ machine environment.
 
 ```bash
 bash structure.sh
-./enter_repo_shell.sh
+./setup_shell_repo_env.sh
 ```
 
 ### PowerShell
 
 ```powershell
 .\structure.ps1
-.\enter_repo_shell.ps1
+.\setup_shell_repo_env.ps1
 ```
 
 ## First experiment

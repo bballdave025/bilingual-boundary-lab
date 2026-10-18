@@ -180,9 +180,9 @@ Set-Content -Encoding UTF8 -Path "tools/pytree.py" -Value $Pytree
 Set-Content -Encoding UTF8 -Path ".portable_bashrc" -Value $BashProfile
 Set-Content -Encoding UTF8 -Path ".portable_profile.ps1" `
     -Value $PowerShellProfile
-Set-Content -Encoding UTF8 -Path "enter_repo_shell.sh" `
+Set-Content -Encoding UTF8 -Path "setup_shell_repo_env.sh" `
     -Value $BashLauncher
-Set-Content -Encoding UTF8 -Path "enter_repo_shell.ps1" `
+Set-Content -Encoding UTF8 -Path "setup_shell_repo_env.ps1" `
     -Value $PowerShellLauncher
 
 Write-Host "BBL repo-local helper environment refreshed."

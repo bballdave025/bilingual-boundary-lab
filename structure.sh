@@ -126,7 +126,7 @@ alias bblrun='python scripts/run_first_experiment.py'
 PS1="(bbl) ${PS1:-\\u@\\h:\\w\\$ }"
 BASHRC
 
-cat > enter_repo_shell.sh <<'SH'
+cat > setup_shell_repo_env.sh <<'SH'
 #!/usr/bin/env bash
 set -euo pipefail
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -165,11 +165,11 @@ function prompt {
 }
 PS1
 
-cat > enter_repo_shell.ps1 <<'PS1'
+cat > setup_shell_repo_env.ps1 <<'PS1'
 $RepoRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
 pwsh -NoProfile -NoExit -Command `
     ". '$RepoRoot/.portable_profile.ps1'"
 PS1
 
-chmod +x structure.sh enter_repo_shell.sh
+chmod +x structure.sh setup_shell_repo_env.sh
 echo "BBL repo-local helper environment refreshed."
