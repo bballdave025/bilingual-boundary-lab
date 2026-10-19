@@ -106,9 +106,13 @@ starting with `characters[:n]`, random seed 2718+n. n=0 has empty prefix.
 These are reproducible opening-conditioned demonstrations, not representative
 sampling evidence. They include source-heading artifacts.
 
-$$
-P \left( w_t \mid w_{\lt t} \right) \approx P \left( w_t \mid w_{t-k}, \ldots, w_{t-1} \right)
-$$.
+<br/>
+
+```math
+P\left(w_t \mid w_{\lt t}\right) \approx P\left(w_t \mid w_{t-k}, \ldots, w_{t-1}\right).
+```
+
+<br/>
 
 Code n counts preceding context tokens; conventional n-gram order is n+1.
 An n-gram model IS a statistical language model, not a neural language model.
