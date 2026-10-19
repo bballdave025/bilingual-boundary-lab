@@ -55,5 +55,23 @@ later; current artifact is intentionally bounded so other projects can
 reach a comparable state. Corpus completeness/source-passage interpretation
 and overwrite-mode tests are not claimed complete.
 
-This note describes prepared changes and supplied validation. It does not
-claim the branch is pushed, the PR exists, or a merge has occurred.
+---
+
+## Checklist 
+
+- [x] Preserve the full-corpus overview.
+- [x] Add --num-language-changes TARGET_NUMBER.
+- [x] Plot \(N+1\) complete runs for \(N\) switches.
+- [x] Warn and use available runs when the request exceeds the corpus.
+- [x] Reject negative requests; allow zero switches.
+- [x] Save each requested zoom under a separate filename.
+- [x] Preserve figure dimensions and the overview’s vertical scale.
+- [x] Label the axis as script-class changes, including Numeric/Other transitions.
+- [x] Pass all 19 tests on Windows.
+- [x] Add initial Experiment 00 observations and README usage.
+- [x] Add *.patch to your local ignore rules.
+- [x] Deliver/apply the follow-up patch: safe structure flags and expanded observations, including translation/ROUGE, your penguin joke, and generation seeds.
+- [x] Review the generated 100/250/500/1000 figures and choose which to commit.
+- [x] Inspect the final diff, commit, and push.
+- [x] Open the PR, review its file list, then merge.
+- [x] Return to updated main.
