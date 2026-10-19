@@ -10,3 +10,6 @@ outputs/generated/
 
 # Local Python environments
 .venv*/
+
+# Local patch transfer files
+*.patch

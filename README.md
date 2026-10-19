@@ -155,3 +155,30 @@ has not yet been verified.
 
 The historical `build_status.json` failure record predates this
 successful retrieval and is not updated automatically by the builder.
+
+## Prefix detail view
+
+```powershell
+python scripts/run_first_experiment.py --num-language-changes 1000
+```
+
+Plots the first 1,001 complete script-class runs in a separate figure,
+with the same dimensions and vertical scale as the overview. The CLI name
+is convenient shorthand: transitions include Numeric and Other classes,
+not only Russian/French switches. Requests beyond the corpus warn and
+plot the available runs. Omit the option for the full overview.
+
+See [Experiment 00 observations](docs/observation_docs/Experiment_00_Observations.md)
+for preprocessing, generated samples, and interpretation limits.
+
+## Development validation and continuation
+
+- [TESTME: scaffold safety and regression checks](docs/dev_notes/TESTME.md)
+- [Context documents and reusable templates](docs/context_documents/README.md)
+- [Experiment 00 continuation](docs/context_documents/LN_bbl_2026-10-19_ctx01_-_experiment-00-prefix-zoom.md)
+
+The Python suite passed 19 tests on Windows on 2026-10-19. ~~PowerShell scaffold preservation remains an explicit, separate validation task.~~
+**Verified on Windows, 2026-10-19:** existing edits preserved, missing files
+created, and a second safe run left all six scaffold files unchanged.
+See [TESTME](docs/dev_notes/TESTME.md) for the reproducible check.
+Remove the struck-through historical sentence on the next branch.

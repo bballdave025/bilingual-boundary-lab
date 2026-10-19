@@ -1,3 +1,17 @@
+# Preserve existing scaffold files by default; $false restores templates.
+$do_very_safe_structure = $true
+
+function Write-Scaffold {
+    param([string]$Path, [string]$Value)
+    if ($do_very_safe_structure -and (Test-Path -LiteralPath $Path)) {
+        Write-Host "Preserving $Path"
+        return
+    }
+    $encoding = New-Object System.Text.UTF8Encoding($false)
+    $lfValue = $Value.Replace("`r`n", "`n").TrimEnd("`r", "`n") + "`n"
+    [IO.File]::WriteAllText((Join-Path (Get-Location).Path $Path), $lfValue, $encoding)
+}
+
 $ErrorActionPreference = "Stop"
 
 $RepoRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
@@ -175,14 +189,14 @@ pwsh -NoProfile -NoExit -Command `
     ". '$RepoRoot/.portable_profile.ps1'"
 '@
 
-Set-Content -Encoding UTF8 -Path "tools/pytouch.py" -Value $Pytouch
-Set-Content -Encoding UTF8 -Path "tools/pytree.py" -Value $Pytree
-Set-Content -Encoding UTF8 -Path ".portable_bashrc" -Value $BashProfile
-Set-Content -Encoding UTF8 -Path ".portable_profile.ps1" `
+Write-Scaffold -Path "tools/pytouch.py" -Value $Pytouch
+Write-Scaffold -Path "tools/pytree.py" -Value $Pytree
+Write-Scaffold -Path ".portable_bashrc" -Value $BashProfile
+Write-Scaffold -Path ".portable_profile.ps1" `
     -Value $PowerShellProfile
-Set-Content -Encoding UTF8 -Path "setup_shell_repo_env.sh" `
+Write-Scaffold -Path "setup_shell_repo_env.sh" `
     -Value $BashLauncher
-Set-Content -Encoding UTF8 -Path "setup_shell_repo_env.ps1" `
+Write-Scaffold -Path "setup_shell_repo_env.ps1" `
     -Value $PowerShellLauncher
 
 Write-Host "BBL repo-local helper environment refreshed."

@@ -56,6 +56,7 @@ def plot_runs(
     *,
     base: float = 10.0,
     title: str | None = None,
+    radius_limit: int | None = None,
 ):
     """Plot one maximal script run per column."""
     pixels = runs_to_pixels(runs, base=base)
@@ -70,7 +71,13 @@ def plot_runs(
         vmin=0,
         vmax=3,
     )
-    axis.set_xlabel("Maximal language/script run order")
+    if radius_limit is not None:
+        local_radius = (pixels.shape[0] - 1) // 2
+        if radius_limit < local_radius:
+            raise ValueError("radius_limit must cover all plotted runs")
+        axis.set_ylim(local_radius + radius_limit + 0.5,
+                      local_radius - radius_limit - 0.5)
+    axis.set_xlabel("Script-run index (cumulative script-class changes, from 0)")
     axis.set_ylabel("Rounded logarithmic radius")
     axis.set_yticks([])
     axis.set_title(

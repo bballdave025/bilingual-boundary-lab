@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import argparse
 import json
 import sys
 from collections import Counter
@@ -17,7 +18,7 @@ from bbl.normalization import (
     normalized_tokens,
 )
 from bbl.runs import build_runs
-from bbl.visualization import plot_runs
+from bbl.visualization import log_radius, plot_runs
 
 CORPUS_PATH = (
     REPO_ROOT / "data/raw/war_and_peace_ru_fr_wikisource.txt"
@@ -27,7 +28,32 @@ FIGURE_PATH = REPO_ROOT / "outputs/figures/script_runs_base10.png"
 SUMMARY_PATH = REPO_ROOT / "outputs/first_experiment_summary.json"
 
 
+def select_prefix(runs, num_changes):
+    """Keep complete runs: N class switches require N + 1 runs."""
+    if num_changes is None:
+        return runs
+    if num_changes < 0:
+        raise ValueError("number of changes must be nonnegative")
+    available = max(0, len(runs) - 1)
+    if num_changes > available:
+        print(
+            f"Warning: requested {num_changes} script-class changes, "
+            f"but only {available} are available; plotting all runs.",
+            file=sys.stderr,
+        )
+    return runs[:num_changes + 1]
+
+
 def main() -> None:
+    parser = argparse.ArgumentParser(description="Run the initial corpus experiment.")
+    parser.add_argument(
+        "--num-language-changes", type=int, default=None, metavar="TARGET_NUMBER",
+        help="Plot the first N script-class changes (N+1 complete runs). "
+             "Includes numeric/other transitions; not inferred language identity.",
+    )
+    args = parser.parse_args()
+    if args.num_language_changes is not None and args.num_language_changes < 0:
+        parser.error("--num-language-changes must be nonnegative")
     text = CORPUS_PATH.read_text(encoding="utf-8")
     words = normalized_tokens(text)
     characters = normalized_character_stream(text)
@@ -45,10 +71,17 @@ def main() -> None:
         encoding="utf-8",
     )
 
+    plotted_runs = select_prefix(runs, args.num_language_changes)
+    figure_path = FIGURE_PATH if args.num_language_changes is None else (
+        FIGURE_PATH.with_name(
+            f"script_runs_base10_first_{args.num_language_changes}_changes.png"
+        )
+    )
     plot_runs(
-        runs,
-        FIGURE_PATH,
+        plotted_runs,
+        figure_path,
         base=10,
+        radius_limit=max((log_radius(r.length) for r in runs), default=0),
     )
 
     samples: dict[str, str] = {}
@@ -105,7 +138,7 @@ def main() -> None:
         encoding="utf-8",
     )
     print(f"Wrote {RUNS_PATH}")
-    print(f"Wrote {FIGURE_PATH}")
+    print(f"Wrote {figure_path} ({len(plotted_runs)} runs)")
     print(f"Wrote {SUMMARY_PATH}")
 
 
