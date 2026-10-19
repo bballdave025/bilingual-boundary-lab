@@ -107,7 +107,7 @@ These are reproducible opening-conditioned demonstrations, not representative
 sampling evidence. They include source-heading artifacts.
 
 $$
-P \left( w_t \mid w_{<t} \right) \approx P \left( w_t \mid w_{t-k}, \ldots, w_{t-1} \right)
+P \left( w_t \mid w_{\lt t} \right) \approx P \left( w_t \mid w_{t-k}, \ldots, w_{t-1} \right)
 $$.
 
 Code n counts preceding context tokens; conventional n-gram order is n+1.
