@@ -1,6 +1,18 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# Preserve existing scaffold files by default; false restores templates.
+do_very_safe_structure=true
+write_scaffold() {
+  local target="$1"
+  if [[ "$do_very_safe_structure" == true && -e "$target" ]]; then
+    cat > /dev/null
+    printf 'Preserving %s\n' "$target"
+  else
+    cat > "$target"
+  fi
+}
+
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$repo_root"
 
@@ -16,7 +28,7 @@ mkdir -p \
   tests \
   tools
 
-cat > tools/pytouch.py <<'PY'
+write_scaffold tools/pytouch.py <<'PY'
 from __future__ import annotations
 
 import argparse
@@ -37,7 +49,7 @@ if __name__ == "__main__":
     main()
 PY
 
-cat > tools/pytree.py <<'PY'
+write_scaffold tools/pytree.py <<'PY'
 from __future__ import annotations
 
 import argparse
@@ -110,7 +122,7 @@ if __name__ == "__main__":
     main()
 PY
 
-cat > .portable_bashrc <<'BASHRC'
+write_scaffold .portable_bashrc <<'BASHRC'
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 export BBL_REPO_ROOT="$repo_root"
 export PYTHONPATH="$repo_root/src${PYTHONPATH:+:$PYTHONPATH}"
@@ -126,14 +138,14 @@ alias bblrun='python scripts/run_first_experiment.py'
 PS1="(bbl) ${PS1:-\\u@\\h:\\w\\$ }"
 BASHRC
 
-cat > setup_shell_repo_env.sh <<'SH'
+write_scaffold setup_shell_repo_env.sh <<'SH'
 #!/usr/bin/env bash
 set -euo pipefail
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 exec bash --noprofile --rcfile "$repo_root/.portable_bashrc" -i
 SH
 
-cat > .portable_profile.ps1 <<'PS1'
+write_scaffold .portable_profile.ps1 <<'PS1'
 $RepoRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
 $env:BBL_REPO_ROOT = $RepoRoot
 $env:PYTHONPATH = if ($env:PYTHONPATH) {
@@ -165,11 +177,13 @@ function prompt {
 }
 PS1
 
-cat > setup_shell_repo_env.ps1 <<'PS1'
+write_scaffold setup_shell_repo_env.ps1 <<'PS1'
 $RepoRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
 pwsh -NoProfile -NoExit -Command `
     ". '$RepoRoot/.portable_profile.ps1'"
 PS1
 
-chmod +x structure.sh setup_shell_repo_env.sh
+if [[ "$do_very_safe_structure" != true ]]; then
+  chmod +x structure.sh setup_shell_repo_env.sh
+fi
 echo "BBL repo-local helper environment refreshed."
