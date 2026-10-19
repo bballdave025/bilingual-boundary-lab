@@ -155,3 +155,18 @@ has not yet been verified.
 
 The historical `build_status.json` failure record predates this
 successful retrieval and is not updated automatically by the builder.
+
+## Prefix detail view
+
+```powershell
+python scripts/run_first_experiment.py --num-language-changes 1000
+```
+
+Plots the first 1,001 complete script-class runs in a separate figure,
+with the same dimensions and vertical scale as the overview. The CLI name
+is convenient shorthand: transitions include Numeric and Other classes,
+not only Russian/French switches. Requests beyond the corpus warn and
+plot the available runs. Omit the option for the full overview.
+
+See [Experiment 00 observations](docs/observation_docs/Experiment_00_Observations.md)
+for preprocessing, generated samples, and interpretation limits.
